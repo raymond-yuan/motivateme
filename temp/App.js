@@ -10,8 +10,11 @@ import DateRangePicker from 'DateRangePicker';
 // var userData = {raymond: [{task1:"task1"}], sumeet: [task1:"task1"]};
 // var taskData = {task1: {deadline: "10.15.2016", action: "eat"}};
 
+
 class App extends React.Component {
+
   constructor(props) {
+    var d = new Date();
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,7 +56,8 @@ class App extends React.Component {
     if (newItem.text.length > 0) {
       this.setState((prevState) => ({
         items: prevState.items.concat(newItem),
-        text: ''
+        text: '',
+        dead: ''
       }));
     }
   }
@@ -64,7 +68,7 @@ class TodoList extends React.Component {
     return (
       <ul>
         {this.props.items.map(item => (
-          <li key={item.id}>{item.text}</li>
+          <li key={item.id}>{item.text, item.deadline}</li>
         ))}
       </ul>
     );
