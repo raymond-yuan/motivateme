@@ -41,6 +41,10 @@ class App extends React.Component {
       // user: userData.raymond,
       text: this.state.text,
       id: Date.now()
+      current: Date.getMonth().toString() + "/" +
+                Date.getDate() + "/" +
+                Date.getFullYear();
+      deadline: this.state.date
     };
     if (newItem.text.length > 0) {
       this.setState((prevState) => ({
