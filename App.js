@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import DateRangePicker from 'DateRangePicker';
 // class App extends React.Component {
 //   render() {
 //     return <div>Hello</div>
@@ -14,7 +15,7 @@ class App extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {items: [], text: ''};
+    this.state = {items: [], text: '', deadline: ''};
   }
 
   render() {
@@ -26,7 +27,9 @@ class App extends React.Component {
           <input onChange={this.handleChange} value={this.state.text} />
           <button>{'Add #' + (this.state.items.length + 1)}</button>
         </form>
-
+        <div>
+          <DateRangePickerWrapper />
+        </div>
       </div>
     );
   }
@@ -37,14 +40,15 @@ class App extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    var date = new Date()
     var newItem = {
       // user: userData.raymond,
       text: this.state.text,
-      id: Date.now()
-      current: Date.getMonth().toString() + "/" +
-                Date.getDate() + "/" +
-                Date.getFullYear();
-      deadline: this.state.date
+      id: Date.now(),
+      current: date.getMonth().toString() + "/" +
+                date.getDate() + "/" +
+                date.getFullYear(),
+      deadline: this.state.deadline
     };
     if (newItem.text.length > 0) {
       this.setState((prevState) => ({
@@ -63,6 +67,44 @@ class TodoList extends React.Component {
           <li key={item.id}>{item.text}</li>
         ))}
       </ul>
+    );
+  }
+}
+
+class DateRangePickerWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      focusedInput: null,
+      startDate: null,
+      endDate: null,
+    };
+
+    this.onDatesChange = this.onDatesChange.bind(this);
+    this.onFocusChange = this.onFocusChange.bind(this);
+  }
+
+  onDatesChange({ startDate, endDate }) {
+    this.setState({ startDate, endDate });
+  }
+
+  onFocusChange(focusedInput) {
+    this.setState({ focusedInput });
+  }
+
+  render() {
+    const { focusedInput, startDate, endDate } = this.state;
+    return (
+      <div>
+        <DateRangePicker
+          {...this.props}
+          onDatesChange={this.onDatesChange}
+          onFocusChange={this.onFocusChange}
+          focusedInput={focusedInput}
+          startDate={startDate}
+          endDate={endDate}
+        />
+      </div>
     );
   }
 }
