@@ -99,19 +99,6 @@ FriendlyChat.prototype.saveMessage = function(e) {
   }
 };
 
-// Sets the URL of the given img element with the URL of the image stored in Firebase Storage.
-FriendlyChat.prototype.setImageUrl = function(imageUri, imgElement) {
-  // If the image is a Firebase Storage URI we fetch the URL.
-  if (imageUri.startsWith('gs://')) {
-    imgElement.src = FriendlyChat.LOADING_IMAGE_URL; // Display a loading image first.
-    this.storage.refFromURL(imageUri).getMetadata().then(function(metadata) {
-      imgElement.src = metadata.downloadURLs[0];
-    });
-  } else {
-    imgElement.src = imageUri;
-  }
-};
-
 // Saves a new message containing an image URI in Firebase.
 // This first saves the image in Firebase storage.
 FriendlyChat.prototype.saveImageMessage = function(event) {
@@ -226,7 +213,7 @@ FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
-      '<div class="name"></div>' +
+      '<input type="checkbox"></input>' +
     '</div>';
 
 // A loading image URL.
@@ -248,19 +235,9 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   }
   div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
-  if (text) { // If the message is text.
-    messageElement.textContent = text;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  } else if (imageUri) { // If the message is an image.
-    var image = document.createElement('img');
-    image.addEventListener('load', function() {
-      this.messageList.scrollTop = this.messageList.scrollHeight;
-    }.bind(this));
-    this.setImageUrl(imageUri, image);
-    messageElement.innerHTML = '';
-    messageElement.appendChild(image);
-  }
+  messageElement.textContent = text;
+  // Replace all line breaks by <br>.
+  messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
   // Show the card fading-in and scroll to view the new message.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
