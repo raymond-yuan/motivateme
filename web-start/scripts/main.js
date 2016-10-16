@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 'use strict';
-
 // Initializes FriendlyChat.
 function FriendlyChat() {
   this.checkSetup();
@@ -213,7 +212,7 @@ FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
-      '<input type="checkbox"></input>' +
+      '<div class="input"><input class="filled-in" type="checkbox"></input></div>' +
     '</div>';
 
 // A loading image URL.
@@ -235,13 +234,23 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   }
   var messageElement = div.querySelector('.message');
   messageElement.textContent = text;
+  var input = div.querySelector('.input').firstChild;
+
+  input.addEventListener('click', this.finishTask.bind(this, key));
   // Replace all line breaks by <br>.
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+
   // Show the card fading-in and scroll to view the new message.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();
 };
+
+FriendlyChat.prototype.finishTask = function(key) {
+  var div = document.getElementById(key);
+  div.parentNode.removeChild(div);
+  this.database.ref("messages/"+key).remove();
+}
 
 // Enables or disables the submit button depending on the values of the input
 // fields.
