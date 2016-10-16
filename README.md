@@ -1,17 +1,6 @@
-# Firebase Codelab: MotivateMe
+Rice Hackathon project developed by Computer Science majors Raymond Yuan, Sumeet Agarwal, Alexander Kim, Spencer Chang.
+This application uses Firebase as the framework to create a productivity application that aims to connect the world.
+Users will find tasks that interest them and compete with others globally to reach their chosen goals.
 
-This is the source code for the Firebase MotivateMe codelab. It includes start and end versions of the
-code for Web, Android, Objective-C and Swift. To get started open the codelab instructions:
-
- - [Web Codelab](https://codelabs.developers.google.com/codelabs/firebase-web/).
- - [Android Codelab](https://codelabs.developers.google.com/codelabs/firebase-android/).
- - [Swift Codelab](https://codelabs.developers.google.com/codelabs/firebase-ios-swift/).
- - [Objective-C Codelab](https://codelabs.developers.google.com/codelabs/firebase-ios-objc/).
-
-
-## How to make contributions?
-Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
-
-
-## License
-See [LICENSE](LICENSE)
+We aim to continue improving upon this project with Paypal and Facebook integration as well as additional features on 
+the user's dashboard.
