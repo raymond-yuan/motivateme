@@ -301,7 +301,9 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
 };
 
 MotivateMe.prototype.joinTask = function(key, name) {
+
   var div = document.getElementById(key);
+  // div.style.display = 'none';
   div.value = "Joined!"
   var uid = firebase.auth().currentUser.uid;
   var currUser = firebase.auth().currentUser.displayName;
