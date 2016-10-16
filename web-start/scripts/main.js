@@ -65,9 +65,39 @@ FriendlyChat.prototype.initFirebase = function() {
 // Loads chat messages history and listens for upcoming ones.
 FriendlyChat.prototype.loadMessages = function() {
   // Reference to the /messages/ database path.
+  const userRef = this.userRef = this.database.ref('users');
+  this.userRef.off();
   this.messagesRef = this.database.ref('messages');
-  // Make sure we remove all previous listeners.
   this.messagesRef.off();
+
+  var uid = this.auth.currentUser.uid.toString();
+
+  // this.userRef.once('value', function(snapshot) {
+  //   if (snapshot.hasChildren()) {
+  //     inDatabase = true;
+  //   }
+  // });
+
+  console.log(this.database.ref('users/Ray'));
+  console.log(uid);
+  console.log(this.userRef);
+
+userRef.once("value")
+    .then(function(snapshot) {
+      console.log('has child', uid)
+  if (!snapshot.hasChild(uid)) {
+    console.log('entered poop');
+    const entry = { }
+    entry[uid] = {"taskList": {0: "emptyTaskList"}}
+    userRef.update(entry)
+    // this.taskListRef = this.database.ref('users/' + uid);
+    // this.taskListRef.update({taskList: []});
+
+
+    // this.userRef.push({name: {"taskList": []}});
+    // this.userRef.update({"user": {"taskList": []}});
+  }
+})
 
   // Loads the last 12 messages and listen for new ones.
   var setMessage = function(data) {
@@ -84,6 +114,10 @@ FriendlyChat.prototype.saveMessage = function(e) {
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
     var currentUser = this.auth.currentUser;
+    var uid = currentUser.uid.toString();
+
+    this.database.ref("user" + (uid)).update({0: data.key});
+
     // Add a new message entry to the Firebase Database.
     this.messagesRef.push({
       name: currentUser.displayName,
@@ -189,6 +223,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 
     // We load currently existing chant messages.
     this.loadMessages();
+
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.setAttribute('hidden', 'true');
