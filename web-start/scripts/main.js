@@ -272,32 +272,22 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   messageElement.textContent = text;
   var input = div.querySelector('.input').firstChild;
 
-  var uid = this.auth.currentUser.uid.toString();
-
+  var uid = firebase.auth().currentUser.uid;
   var taskListRef = this.database.ref("users/" + uid + "/taskList");
+
+  console.log('Input Name', name)
+  console.log('curr user name', firebase.auth().currentUser.displayName)
+
   taskListRef.once('value', function(snapshot) {
+    if (name == firebase.auth().currentUser.displayName){
+    console.log("equal asss")
     const entry = { }
     var a = snapshot.numChildren()
-    console.log(a);
+    console.log('index', a);
     entry[a] = {"taskID": key, "status": true}
     taskListRef.update(entry)
+  }
    });
-
-  //  if (!snapshot.hasChild(uid)) {
-  //    console.log('entered poop');
-  //    const entry = { }
-  //    entry[uid] = {"taskList": {0:
-  //                                {"taskID": "empty",
-  //                                "status": "emptyStatus"}
-  //                              }};
-  //    userRef.update(entry)
-  //    // this.taskListRef = this.database.ref('users/' + uid);
-  //    // this.taskListRef.update({taskList: []});
-   //
-   //
-  //    // this.userRef.push({name: {"taskList": []}});
-  //    // this.userRef.update({"user": {"taskList": []}});
-  //  }
 
   input.addEventListener('click', this.finishTask.bind(this, key));
   // Replace all line breaks by <br>.
