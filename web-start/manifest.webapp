@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "name": "Friendly Chat",
+  "name": "Motivate Me",
   "launch_path": "/index.html",
-  "description": "Chat with friends using Firebase 2.0",
+  "description": "Compete Globally",
   "developer": {
-    "name": "Google inc.",
-    "url": "https://firebase.google.com"
+    "name": "Raymond Yuan, Sumeet Agarwal, Alex Kim, Spencer Chang",
+    "url": "https://motivateme-db093.firebaseapp.com"
   },
   "installs_allowed_from": [
     "*"
@@ -15,8 +15,8 @@
   },
   "locales": {
     "en": {
-      "name": "Friendly Chat",
-      "description": "Chat with friends using Firebase 2.0"
+      "name": "Motivate Me",
+      "description": "Compete Globally"
     }
   }
 }
