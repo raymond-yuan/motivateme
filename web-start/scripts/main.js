@@ -23,14 +23,12 @@ function FriendlyChat() {
   this.messageForm = document.getElementById('message-form');
   this.messageInput = document.getElementById('message');
   this.submitButton = document.getElementById('submit');
-  this.submitImageButton = document.getElementById('submitImage');
-  this.imageForm = document.getElementById('image-form');
-  this.mediaCapture = document.getElementById('mediaCapture');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.specificDate = document.getElementById('specific-date');
 
   // Saves message on form submit.
   this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
@@ -41,12 +39,6 @@ function FriendlyChat() {
   var buttonTogglingHandler = this.toggleButton.bind(this);
   this.messageInput.addEventListener('keyup', buttonTogglingHandler);
   this.messageInput.addEventListener('change', buttonTogglingHandler);
-
-  // Events for image upload.
-  this.submitImageButton.addEventListener('click', function() {
-    this.mediaCapture.click();
-  }.bind(this));
-  this.mediaCapture.addEventListener('change', this.saveImageMessage.bind(this));
 
   this.initFirebase();
 }
@@ -104,7 +96,7 @@ userRef.once("value")
   // Loads the last 12 messages and listen for new ones.
   var setMessage = function(data) {
     var val = data.val();
-    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
+    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.deadline);
   }.bind(this);
   this.messagesRef.limitToLast(12).on('child_added', setMessage);
   this.messagesRef.limitToLast(12).on('child_changed', setMessage);
@@ -112,6 +104,7 @@ userRef.once("value")
 
 // Saves a new message on the Firebase DB.
 FriendlyChat.prototype.saveMessage = function(e) {
+
   e.preventDefault();
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
@@ -122,7 +115,7 @@ FriendlyChat.prototype.saveMessage = function(e) {
       name: currentUser.displayName,
       text: this.messageInput.value,
       photoUrl: currentUser.photoURL || '/images/profile_placeholder.png',
-      deadline: Date.now()
+      deadline: this.specificDate.value
     }).then(function() {
       // Clear message text field and SEND button state.
       FriendlyChat.resetMaterialTextfield(this.messageInput);
@@ -140,16 +133,6 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
 
   // Clear the selection in the file picker input.
   this.imageForm.reset();
-
-  // Check if the file is an image.
-  if (!file.type.match('image.*')) {
-    var data = {
-      message: 'You can only share images',
-      timeout: 2000
-    };
-    this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
-    return;
-  }
 
   // Check if the user is signed-in
   if (this.checkSignedInWithMessage()) {
@@ -248,14 +231,12 @@ FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
+      '<div class="deadline"></div>' +
       '<div class="input"><input class="filled-in" type="checkbox"></input></div>' +
     '</div>';
 
-// A loading image URL.
-FriendlyChat.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
-
 // Displays a Message in the UI.
-FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageUri) {
+FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, deadline) {
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
@@ -267,6 +248,9 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   }
   if (picUrl) {
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
+  }
+  if (deadline){
+    console.log(deadline);
   }
   var messageElement = div.querySelector('.message');
   messageElement.textContent = text;
@@ -294,6 +278,13 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
 
   // Show the card fading-in and scroll to view the new message.
+  if (text) { // If the message is text.
+    messageElement.textContent = text;
+    // Replace all line breaks by <br>.
+    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+  }
+
+  // Show the card fading-in.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();

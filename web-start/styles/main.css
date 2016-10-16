@@ -19,10 +19,10 @@ html, body {
 }
 main, #messages-card {
   height: 100%;
-  padding-bottom: 0;
+  padding-bottom: 25px;
 }
 #messages-card-container {
-  height: calc(100% - 150px);
+  height: calc(100% - 25px);
   padding-bottom: 0;
 }
 #messages-card {
@@ -76,10 +76,10 @@ main, #messages-card {
 .message-container .pic {
   background-image: url('/images/profile_placeholder.png');
   background-repeat: no-repeat;
-  width: 30px;
-  height: 30px;
-  background-size: 30px;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  border-radius: 25px;
 }
 .message-container .spacing {
   display: table-cell;
@@ -102,21 +102,20 @@ main, #messages-card {
 #message-form {
   display: flex;
   flex-direction: row;
-  width: calc(100% - 48px);
+  width: calc(100% - 0px);
   float: left;
-}
-#image-form {
-  display: flex;
-  flex-direction: row;
-  width: 48px;
-  float: right;
 }
 #message-form .mdl-textfield {
   width: calc(100% - 100px);
 }
-#message-form button, #image-form button {
+#message-form button {
   width: 100px;
   margin: 15px 0 0 10px;
+}
+
+#message-form input {
+  width: 150px;
+  margin: 5px 5px 0 10px;
 }
 .mdl-card {
   min-height: 0;
@@ -125,6 +124,8 @@ main, #messages-card {
   background: linear-gradient(white, #f9f9f9);
   justify-content: space-between;
 }
+
+
 #user-container {
   position: absolute;
   display: flex;
@@ -153,14 +154,7 @@ main, #messages-card {
   padding-right: 10px;
   padding-left: 20px;
 }
-#image-form #submitImage {
-  width: auto;
-  padding: 0 6px 0 1px;
-  min-width: 0;
-}
-#image-form #submitImage .material-icons {
-  top: -1px;
-}
+
 .message img {
   max-width: 300px;
   max-height: 200px;
@@ -196,4 +190,14 @@ main, #messages-card {
 .mdl-button .material-icons {
   top: -1px;
   margin-right: 5px;
+}
+.date-due-right {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+.filled-in {
+  font-size: 100px;
+}
+.input {
+  text-align: right;
 }

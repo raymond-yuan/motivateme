@@ -17,7 +17,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="Learn how to use the Firebase platform on the Web">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Friendly Chat</title>
+  <title>Motivate Me</title>
 
   <!--Import Google Icon Font-->
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -64,7 +64,7 @@
   <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
     <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
       <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <h3><i class="material-icons">chat_bubble_outline</i> Friendly Chat</h3>
+        <h3><i class="material-icons">chat_bubble_outline</i> Motivate Me</h3>
       </div>
       <div id="user-container">
         <div hidden id="user-pic"></div>
@@ -91,17 +91,17 @@
           <form id="message-form" action="#">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" id="message">
-              <label class="mdl-textfield__label" for="message">Message...</label>
+              <label class="mdl-textfield__label" for="message">New Task</label>
             </div>
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-              Send
-            </button>
-          </form>
-          <form id="image-form" action="#">
-            <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
-            </button>
+            <div id = "dater">
+              <div class="date-due-right">Date due:</div>
+              <input id = "specific-date" style = "font-family: 'Roboto', 'Helvetica', sans-serif" type="date">
+            </div>
+            <div id="submission-card">
+              <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Send
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -115,20 +115,16 @@
   </main>
 </div>
 
-<!--Import jQuery before materialize.js-->
-<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="scripts/materialize.js"></script> -->
-
 <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
 <script>
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyAXXSQHu5pCZjRur9uOYOzDI6i2V_4rGso",
-    authDomain: "motivateme-db093.firebaseapp.com",
-    databaseURL: "https://motivateme-db093.firebaseio.com",
-    storageBucket: "motivateme-db093.appspot.com",
-    messagingSenderId: "393810175341"
-  };
+    apiKey: "AIzaSyAXXSQHu5pCZjRur9uOYOzDI6i2V_4rGso",
+    authDomain: "motivateme-db093.firebaseapp.com",
+    databaseURL: "https://motivateme-db093.firebaseio.com",
+    storageBucket: "motivateme-db093.appspot.com",
+    messagingSenderId: "393810175341"
+  };
   firebase.initializeApp(config);
 </script>
 
