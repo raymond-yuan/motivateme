@@ -233,7 +233,7 @@ MotivateMe.MESSAGE_TEMPLATE =
       '<div class="message"></div>' +
 
       '<div class ="join"><button class="mdl-button" type="button">Join</button></div>'+
-      '<div class="input"><input class="filled-in" type="checkbox"></input><div class="deadline"></div></div>' +
+      '<div class="input"><input class="filled-in" type="checkbox"></input><div class="deadline"></div> <div class="usrCnt"></div></div>' +
     '</div>';
 
 // Displays a Message in the UI.
@@ -304,16 +304,35 @@ MotivateMe.prototype.joinTask = function(key, name) {
   var div = document.getElementById(key);
   div.value = "Joined!"
   var uid = firebase.auth().currentUser.uid;
+  var currUser = firebase.auth().currentUser.displayName;
   var taskListRef = this.database.ref("users/" + uid + "/taskList");
   taskListRef.once('value', function(snapshot) {
-    if (name != firebase.auth().currentUser.displayName){
+    var count = 1
+    if (name != currUser && count == 1){
     const entry = { }
-    var a = snapshot.numChildren()
+    var a = snapshot.numChildren();
     console.log('index', a);
     entry[a] = {"taskID": key, "status": true}
     taskListRef.update(entry)
+    count = count + 1
   }
    });
+
+   var taskRef = this.database.ref("messages/" +key + "/usrs")
+   taskRef.once('value', function(snapshot) {
+     var count = 1;
+     if (count == 1) {
+     var a = snapshot.numChildren();
+     const entry = { };
+     entry[a] = uid;
+     taskRef.update(entry);
+     console.log("log", a);
+     div.querySelector('.usrCnt').textContent = "Number of Users: " + a.toString();
+     count = count + 1;
+   }
+   })
+
+
 }
 
 MotivateMe.prototype.finishTask = function(key) {
