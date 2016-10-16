@@ -270,19 +270,22 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
   console.log('curr user name', firebase.auth().currentUser.displayName)
 
   taskListRef.once('value', function(snapshot) {
-    if (name == firebase.auth().currentUser.displayName){
+    var count = 1;
+    if (name == firebase.auth().currentUser.displayName && count == 1){
     console.log("equal asss")
     const entry = { }
     var a = snapshot.numChildren()
     console.log('index', a);
     entry[a] = {"taskID": key, "status": true}
     taskListRef.update(entry)
+    count = count + 1
   }
    });
 
   input.addEventListener('click', this.finishTask.bind(this, key));
 
-  var join = div.querySelector('.join');
+  var join = div.querySelector('.join').firstChild;
+  join.addEventListener('click', this.disableButton.bind(this, join));
   join.addEventListener('click', this.joinTask.bind(this, key, name));
   // Replace all line breaks by <br>.
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
@@ -300,9 +303,13 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
   this.messageInput.focus();
 };
 
+MotivateMe.prototype.disableButton = function(inDiv) {
+  inDiv.setAttribute('disabled', 'true');
+}
+
 MotivateMe.prototype.joinTask = function(key, name) {
   var div = document.getElementById(key);
-  div.value = "Joined!"
+  // div.value = "Joined!"
   var uid = firebase.auth().currentUser.uid;
   var currUser = firebase.auth().currentUser.displayName;
   var taskListRef = this.database.ref("users/" + uid + "/taskList");
@@ -321,7 +328,7 @@ MotivateMe.prototype.joinTask = function(key, name) {
    var taskRef = this.database.ref("messages/" +key + "/usrs")
    taskRef.once('value', function(snapshot) {
      var count = 1;
-     if (count == 1) {
+     if (count == 1 && name != currUser) {
      var a = snapshot.numChildren();
      const entry = { };
      entry[a] = uid;
