@@ -274,13 +274,30 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
 
   var uid = this.auth.currentUser.uid.toString();
 
-  var taskListRef = this.database.ref("users/" + uid);
+  var taskListRef = this.database.ref("users/" + uid + "/taskList");
   taskListRef.once('value', function(snapshot) {
     const entry = { }
     var a = snapshot.numChildren()
-    entry[key] = {a: key}
-     taskListRef.update(entry)
+    console.log(a);
+    entry[a + 1] = key
+    taskListRef.update(entry)
    });
+
+  //  if (!snapshot.hasChild(uid)) {
+  //    console.log('entered poop');
+  //    const entry = { }
+  //    entry[uid] = {"taskList": {0:
+  //                                {"taskID": "empty",
+  //                                "status": "emptyStatus"}
+  //                              }};
+  //    userRef.update(entry)
+  //    // this.taskListRef = this.database.ref('users/' + uid);
+  //    // this.taskListRef.update({taskList: []});
+   //
+   //
+  //    // this.userRef.push({name: {"taskList": []}});
+  //    // this.userRef.update({"user": {"taskList": []}});
+  //  }
 
   input.addEventListener('click', this.finishTask.bind(this, key));
   // Replace all line breaks by <br>.
