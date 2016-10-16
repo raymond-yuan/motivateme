@@ -17,7 +17,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="Learn how to use the Firebase platform on the Web">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Friendly Chat</title>
+  <title>Motivate Me</title>
 
   <!--Import Google Icon Font-->
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -93,15 +93,15 @@
               <input class="mdl-textfield__input" type="text" id="message">
               <label class="mdl-textfield__label" for="message">New Task</label>
             </div>
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-              Send
-            </button>
-          </form>
-          <form id="image-form" action="#">
-            <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
-            </button>
+            <div id = "dater">
+              <div class="date-due-right">Date due:</div>
+              <input id = "specific-date" style = "font-family: 'Roboto', 'Helvetica', sans-serif" type="date">
+            </div>
+            <div id="submission-card">
+              <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Send
+              </button>
+            </div>
           </form>
         </div>
       </div>

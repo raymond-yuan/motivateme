@@ -23,14 +23,12 @@ function FriendlyChat() {
   this.messageForm = document.getElementById('message-form');
   this.messageInput = document.getElementById('message');
   this.submitButton = document.getElementById('submit');
-  this.submitImageButton = document.getElementById('submitImage');
-  this.imageForm = document.getElementById('image-form');
-  this.mediaCapture = document.getElementById('mediaCapture');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.specificDate = document.getElementById('specific-date');
 
   // Saves message on form submit.
   this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
@@ -41,12 +39,6 @@ function FriendlyChat() {
   var buttonTogglingHandler = this.toggleButton.bind(this);
   this.messageInput.addEventListener('keyup', buttonTogglingHandler);
   this.messageInput.addEventListener('change', buttonTogglingHandler);
-
-  // Events for image upload.
-  this.submitImageButton.addEventListener('click', function() {
-    this.mediaCapture.click();
-  }.bind(this));
-  this.mediaCapture.addEventListener('change', this.saveImageMessage.bind(this));
 
   this.initFirebase();
 }
@@ -79,6 +71,8 @@ FriendlyChat.prototype.loadMessages = function() {
 
 // Saves a new message on the Firebase DB.
 FriendlyChat.prototype.saveMessage = function(e) {
+  var date = this.specificDate.value;
+
   e.preventDefault();
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
@@ -87,7 +81,8 @@ FriendlyChat.prototype.saveMessage = function(e) {
     this.messagesRef.push({
       name: currentUser.displayName,
       text: this.messageInput.value,
-      photoUrl: currentUser.photoURL || '/images/profile_placeholder.png'
+      photoUrl: currentUser.photoURL || '/images/profile_placeholder.png',
+      deadline: date
     }).then(function() {
       // Clear message text field and SEND button state.
       FriendlyChat.resetMaterialTextfield(this.messageInput);
@@ -98,6 +93,7 @@ FriendlyChat.prototype.saveMessage = function(e) {
   }
 };
 
+<<<<<<< HEAD
 // Saves a new message containing an image URI in Firebase.
 // This first saves the image in Firebase storage.
 FriendlyChat.prototype.saveImageMessage = function(event) {
@@ -140,6 +136,8 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
   }
 };
 
+=======
+>>>>>>> Alex's-Branch
 // Signs-in Friendly Chat.
 FriendlyChat.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
@@ -233,6 +231,7 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
   var messageElement = div.querySelector('.message');
+<<<<<<< HEAD
   messageElement.textContent = text;
   var input = div.querySelector('.input').firstChild;
 
@@ -241,6 +240,15 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
 
   // Show the card fading-in and scroll to view the new message.
+=======
+  if (text) { // If the message is text.
+    messageElement.textContent = text;
+    // Replace all line breaks by <br>.
+    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+  }
+
+  // Show the card fading-in.
+>>>>>>> Alex's-Branch
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();
