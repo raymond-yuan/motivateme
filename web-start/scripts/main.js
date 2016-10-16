@@ -115,7 +115,7 @@ MotivateMe.prototype.saveMessage = function(e) {
       name: currentUser.displayName,
       text: this.messageInput.value,
       photoUrl: currentUser.photoURL || '/images/profile_placeholder.png',
-      deadline: this.specificDate.value
+      deadline: this.specificDate.value || new Date(Date.now()+2.592e+9).toISOString().substring(0,10)
     }).then(function() {
       // Clear message text field and SEND button state.
       MotivateMe.resetMaterialTextfield(this.messageInput);
@@ -255,7 +255,6 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
   messageElement.textContent = text;
 
   if (deadline){
-    console.log(deadline);
     var deadlineElement = div.querySelector('.deadline');
     deadlineElement.textContent = deadline;
   }
