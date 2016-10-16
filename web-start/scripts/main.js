@@ -279,7 +279,7 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
     const entry = { }
     var a = snapshot.numChildren()
     console.log(a);
-    entry[a + 1] = key
+    entry[a] = {"taskID": key, "status": true}
     taskListRef.update(entry)
    });
 
