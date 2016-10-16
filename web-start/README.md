@@ -1,5 +1,6 @@
-# Firebase: Build a Real Time Web Chat App Codelab - Start code
+Rice Hackathon project developed by Computer Science majors Raymond Yuan, Sumeet Agarwal, Alexander Kim, Spencer Chang.
+This application uses Firebase as the framework to create a productivity application that aims to connect the world.
+Users will find tasks that interest them and compete with others globally to reach their chosen goals.
 
-This folder contains the starting code for the [Firebase: Build a Real Time Web Chat App Codelab](https://codelabs.developers.google.com/codelabs/firebase-web/).
-
-If you'd like to jump directly to the end and see the finished code head to the [web](../web) directory.
+We aim to continue improving upon this project with Paypal and Facebook integration as well as additional features on 
+the user's dashboard.
