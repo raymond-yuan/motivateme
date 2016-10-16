@@ -308,6 +308,7 @@ MotivateMe.prototype.disableButton = function(inDiv) {
 }
 
 MotivateMe.prototype.joinTask = function(key, name) {
+
   var div = document.getElementById(key);
   // div.value = "Joined!"
   var uid = firebase.auth().currentUser.uid;
