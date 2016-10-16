@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 'use strict';
-
 // Initializes FriendlyChat.
 function FriendlyChat() {
   this.checkSetup();
@@ -134,19 +133,6 @@ FriendlyChat.prototype.saveMessage = function(e) {
   }
 };
 
-// Sets the URL of the given img element with the URL of the image stored in Firebase Storage.
-FriendlyChat.prototype.setImageUrl = function(imageUri, imgElement) {
-  // If the image is a Firebase Storage URI we fetch the URL.
-  if (imageUri.startsWith('gs://')) {
-    imgElement.src = FriendlyChat.LOADING_IMAGE_URL; // Display a loading image first.
-    this.storage.refFromURL(imageUri).getMetadata().then(function(metadata) {
-      imgElement.src = metadata.downloadURLs[0];
-    });
-  } else {
-    imgElement.src = imageUri;
-  }
-};
-
 // Saves a new message containing an image URI in Firebase.
 // This first saves the image in Firebase storage.
 FriendlyChat.prototype.saveImageMessage = function(event) {
@@ -164,6 +150,7 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
     this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
     return;
   }
+
   // Check if the user is signed-in
   if (this.checkSignedInWithMessage()) {
 
@@ -174,7 +161,6 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
       imageUrl: FriendlyChat.LOADING_IMAGE_URL,
       photoUrl: currentUser.photoURL || '/images/profile_placeholder.png'
     }).then(function(data) {
-
       // Upload the image to Firebase Storage.
       this.storage.ref(currentUser.uid + '/' + Date.now() + '/' + file.name)
           .put(file, {contentType: file.type})
@@ -183,8 +169,8 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
             var filePath = snapshot.metadata.fullPath;
             data.update({imageUrl: this.storage.ref(filePath).toString()});
           }.bind(this)).catch(function(error) {
-        console.error('There was an error uploading a file to Firebase Storage:', error);
-      });
+            console.error('There was an error uploading a file to Firebase Storage:', error);
+          });
     }.bind(this));
   }
 };
@@ -206,11 +192,11 @@ FriendlyChat.prototype.signOut = function() {
 FriendlyChat.prototype.onAuthStateChanged = function(user) {
   if (user) { // User is signed in!
     // Get profile pic and user's name from the Firebase user object.
-    var profilePicUrl = user.photoURL; // Only change these two lines!
-    var userName = user.displayName;   // Only change these two lines!
+    var profilePicUrl = user.photoURL;
+    var userName = user.displayName;
 
     // Set the user's profile pic and name.
-    this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    this.userPic.style.backgroundImage = 'url(' + (profilePicUrl || '/images/profile_placeholder.png') + ')';
     this.userName.textContent = userName;
 
     // Show user's profile and sign-out button.
@@ -237,6 +223,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 
 // Returns true if user is signed-in. Otherwise false and displays a message.
 FriendlyChat.prototype.checkSignedInWithMessage = function() {
+  // Return true if the user is signed in Firebase
   if (this.auth.currentUser) {
     return true;
   }
@@ -261,7 +248,7 @@ FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
-      '<div class="name"></div>' +
+      '<div class="input"><input class="filled-in" type="checkbox"></input></div>' +
     '</div>';
 
 // A loading image URL.
@@ -281,26 +268,25 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   if (picUrl) {
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
-  div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
-  if (text) { // If the message is text.
-    messageElement.textContent = text;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  } else if (imageUri) { // If the message is an image.
-    var image = document.createElement('img');
-    image.addEventListener('load', function() {
-      this.messageList.scrollTop = this.messageList.scrollHeight;
-    }.bind(this));
-    this.setImageUrl(imageUri, image);
-    messageElement.innerHTML = '';
-    messageElement.appendChild(image);
-  }
-  // Show the card fading-in.
+  messageElement.textContent = text;
+  var input = div.querySelector('.input').firstChild;
+
+  input.addEventListener('click', this.finishTask.bind(this, key));
+  // Replace all line breaks by <br>.
+  messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+
+  // Show the card fading-in and scroll to view the new message.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();
 };
+
+FriendlyChat.prototype.finishTask = function(key) {
+  var div = document.getElementById(key);
+  div.parentNode.removeChild(div);
+  this.database.ref("messages/"+key).remove();
+}
 
 // Enables or disables the submit button depending on the values of the input
 // fields.
