@@ -231,8 +231,9 @@ MotivateMe.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
-      '<div class="deadline"></div>' +
-      '<div class="input"><input class="filled-in" type="checkbox"></input></div>' +
+
+      '<div class ="join"><button class="mdl-button" type="button">Join</button></div>'+
+      '<div class="input"><input class="filled-in" type="checkbox"></input><div class="deadline"></div></div>' +
     '</div>';
 
 // Displays a Message in the UI.
@@ -249,11 +250,17 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
   if (picUrl) {
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
-  if (deadline){
-    console.log(deadline);
-  }
+
   var messageElement = div.querySelector('.message');
   messageElement.textContent = text;
+
+  if (deadline){
+    console.log(deadline);
+    var deadlineElement = div.querySelector('.deadline');
+    deadlineElement.textContent = deadline;
+  }
+
+
   var input = div.querySelector('.input').firstChild;
 
   var uid = firebase.auth().currentUser.uid;
@@ -274,6 +281,9 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
    });
 
   input.addEventListener('click', this.finishTask.bind(this, key));
+
+  var join = div.querySelector('.join');
+  join.addEventListener('click', this.joinTask.bind(this, key, name));
   // Replace all line breaks by <br>.
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
 
@@ -289,6 +299,22 @@ MotivateMe.prototype.displayMessage = function(key, name, text, picUrl, deadline
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();
 };
+
+MotivateMe.prototype.joinTask = function(key, name) {
+  var div = document.getElementById(key);
+  div.value = "Joined!"
+  var uid = firebase.auth().currentUser.uid;
+  var taskListRef = this.database.ref("users/" + uid + "/taskList");
+  taskListRef.once('value', function(snapshot) {
+    if (name != firebase.auth().currentUser.displayName){
+    const entry = { }
+    var a = snapshot.numChildren()
+    console.log('index', a);
+    entry[a] = {"taskID": key, "status": true}
+    taskListRef.update(entry)
+  }
+   });
+}
 
 MotivateMe.prototype.finishTask = function(key) {
   var div = document.getElementById(key);
