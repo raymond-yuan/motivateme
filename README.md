@@ -1,6 +1,6 @@
-# Firebase Codelab: FriendlyChat
+# Firebase Codelab: MotivateMe
 
-This is the source code for the Firebase FriendlyChat codelab. It includes start and end versions of the
+This is the source code for the Firebase MotivateMe codelab. It includes start and end versions of the
 code for Web, Android, Objective-C and Swift. To get started open the codelab instructions:
 
  - [Web Codelab](https://codelabs.developers.google.com/codelabs/firebase-web/).

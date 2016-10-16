@@ -1,6 +1,6 @@
-# Contributing to the Firebase FriendlyChat Codelab
+# Contributing to the Firebase MotivateMe Codelab
 
-We'd love for you to contribute to our source code and to make the Firebase FriendlyChat Codelab even better than it is today! Here are the guidelines we'd like you to follow:
+We'd love for you to contribute to our source code and to make the Firebase MotivateMe Codelab even better than it is today! Here are the guidelines we'd like you to follow:
 
  - [Code of Conduct](#coc)
  - [Question or Problem?](#question)
@@ -12,7 +12,7 @@ We'd love for you to contribute to our source code and to make the Firebase Frie
 
 ## <a name="coc"></a> Code of Conduct
 
-As contributors and maintainers of the Firebase FriendlyChat Codelab project, we pledge to respect everyone who contributes by posting issues, updating documentation, submitting pull requests, providing feedback in comments, and any other activities.
+As contributors and maintainers of the Firebase MotivateMe Codelab project, we pledge to respect everyone who contributes by posting issues, updating documentation, submitting pull requests, providing feedback in comments, and any other activities.
 
 Communication through any of Firebase's channels (GitHub, StackOverflow, Google+, Twitter, etc.) must be constructive and never resort to personal attacks, trolling, public or private harassment, insults, or other unprofessional conduct.
 
@@ -24,7 +24,7 @@ If you are subject to or witness unacceptable behavior, or have any other concer
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to use the Firebase FriendlyChat Codelab, please direct these to [StackOverflow][stackoverflow] and use the `firebase` tag. We are also available on GitHub issues.
+If you have questions about how to use the Firebase MotivateMe Codelab, please direct these to [StackOverflow][stackoverflow] and use the `firebase` tag. We are also available on GitHub issues.
 
 If you feel that we're missing an important bit of documentation, feel free to
 file an issue so we can help. Here's an example to get you started:
