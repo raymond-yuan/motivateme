@@ -114,8 +114,8 @@ main, #messages-card {
 }
 
 #message-form input {
-  width: 125px;
-  margin: 25px 5px 0 10px;
+  width: 150px;
+  margin: 5px 5px 0 10px;
 }
 .mdl-card {
   min-height: 0;
@@ -190,4 +190,8 @@ main, #messages-card {
 .mdl-button .material-icons {
   top: -1px;
   margin-right: 5px;
+}
+.date-due-right {
+  padding-left: 10px;
+  padding-top: 10px;
 }
