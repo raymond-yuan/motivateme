@@ -87,7 +87,10 @@ userRef.once("value")
   if (!snapshot.hasChild(uid)) {
     console.log('entered poop');
     const entry = { }
-    entry[uid] = {"taskList": {0: "emptyTaskList"}}
+    entry[uid] = {"taskList": {0:
+                                {"taskID": "empty",
+                                "status": "emptyStatus"}
+                              }};
     userRef.update(entry)
     // this.taskListRef = this.database.ref('users/' + uid);
     // this.taskListRef.update({taskList: []});
@@ -113,9 +116,6 @@ FriendlyChat.prototype.saveMessage = function(e) {
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
     var currentUser = this.auth.currentUser;
-    var uid = currentUser.uid.toString();
-
-    this.database.ref("user" + (uid)).update({0: data.key});
 
     // Add a new message entry to the Firebase Database.
     this.messagesRef.push({
@@ -271,6 +271,16 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   var messageElement = div.querySelector('.message');
   messageElement.textContent = text;
   var input = div.querySelector('.input').firstChild;
+
+  var uid = this.auth.currentUser.uid.toString();
+
+  var taskListRef = this.database.ref("users/" + uid);
+  taskListRef.once('value', function(snapshot) {
+    const entry = { }
+    var a = snapshot.numChildren()
+    entry[key] = {a: key}
+     taskListRef.update(entry)
+   });
 
   input.addEventListener('click', this.finishTask.bind(this, key));
   // Replace all line breaks by <br>.
