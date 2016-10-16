@@ -63,7 +63,7 @@ FriendlyChat.prototype.loadMessages = function() {
   // Loads the last 12 messages and listen for new ones.
   var setMessage = function(data) {
     var val = data.val();
-    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
+    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.deadline);
   }.bind(this);
   this.messagesRef.limitToLast(12).on('child_added', setMessage);
   this.messagesRef.limitToLast(12).on('child_changed', setMessage);
@@ -71,7 +71,6 @@ FriendlyChat.prototype.loadMessages = function() {
 
 // Saves a new message on the Firebase DB.
 FriendlyChat.prototype.saveMessage = function(e) {
-  var date = this.specificDate.value;
 
   e.preventDefault();
   // Check that the user entered a message and is signed in.
@@ -82,7 +81,7 @@ FriendlyChat.prototype.saveMessage = function(e) {
       name: currentUser.displayName,
       text: this.messageInput.value,
       photoUrl: currentUser.photoURL || '/images/profile_placeholder.png',
-      deadline: date
+      deadline: this.specificDate.value
     }).then(function() {
       // Clear message text field and SEND button state.
       FriendlyChat.resetMaterialTextfield(this.messageInput);
@@ -93,7 +92,6 @@ FriendlyChat.prototype.saveMessage = function(e) {
   }
 };
 
-<<<<<<< HEAD
 // Saves a new message containing an image URI in Firebase.
 // This first saves the image in Firebase storage.
 FriendlyChat.prototype.saveImageMessage = function(event) {
@@ -101,16 +99,6 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
 
   // Clear the selection in the file picker input.
   this.imageForm.reset();
-
-  // Check if the file is an image.
-  if (!file.type.match('image.*')) {
-    var data = {
-      message: 'You can only share images',
-      timeout: 2000
-    };
-    this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
-    return;
-  }
 
   // Check if the user is signed-in
   if (this.checkSignedInWithMessage()) {
@@ -136,8 +124,6 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
   }
 };
 
-=======
->>>>>>> Alex's-Branch
 // Signs-in Friendly Chat.
 FriendlyChat.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
@@ -210,14 +196,12 @@ FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
+      '<div class="deadline"></div>' +
       '<div class="input"><input class="filled-in" type="checkbox"></input></div>' +
     '</div>';
 
-// A loading image URL.
-FriendlyChat.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
-
 // Displays a Message in the UI.
-FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageUri) {
+FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, deadline) {
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
@@ -230,8 +214,10 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   if (picUrl) {
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
+  if (deadline){
+    console.log(deadline);
+  }
   var messageElement = div.querySelector('.message');
-<<<<<<< HEAD
   messageElement.textContent = text;
   var input = div.querySelector('.input').firstChild;
 
@@ -240,7 +226,6 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
 
   // Show the card fading-in and scroll to view the new message.
-=======
   if (text) { // If the message is text.
     messageElement.textContent = text;
     // Replace all line breaks by <br>.
@@ -248,7 +233,6 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
   }
 
   // Show the card fading-in.
->>>>>>> Alex's-Branch
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.messageInput.focus();
